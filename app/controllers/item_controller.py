@@ -19,3 +19,5 @@ def get_items(db = Depends(get_db)):
 @router.get("/{item_id}", response_model=ItemCreate)
 def get_item(item_id: int, db = Depends(get_db)):
     return item_service.get_item_by_id(item_id, db)
+
+#hahahahaha

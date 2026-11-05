@@ -1,5 +1,4 @@
 import uvicorn
-from fastapi import FastAPI
 from finmkt.fastapi import uvicorn_kwargs_from_settings, create_app_from_settings
 from app.controllers.item_controller import router as item_router
 from app.controllers.user_controller import router as user_router

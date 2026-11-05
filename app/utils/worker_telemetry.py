@@ -1,19 +1,27 @@
+import ctypes
 import os
+import platform
 import psutil
+
+
 def get_worker_diagnostics() -> dict:
     process = psutil.Process(os.getpid())
     mem_info = process.memory_info()
-    # CPU core affinity (on Windows/Linux, shows allowed or active CPU IDs)
+
+    # CPU core affinity (allowed logical cores)
     try:
         cpu_affinity = process.cpu_affinity()
     except (AttributeError, psutil.AccessDenied):
         cpu_affinity = []
 
-    # Active CPU core number (Linux/Unix); fallback on Windows
+    # Active CPU core number (Windows Win32 kernel API + Linux fallback)
     try:
-        current_cpu = (
-            process.cpu_num() if hasattr(process, "cpu_num") else "N/A"
-        )
+        if platform.system() == "Windows":
+            current_cpu = ctypes.windll.kernel32.GetCurrentProcessorNumber()
+        else:
+            current_cpu = (
+                process.cpu_num() if hasattr(process, "cpu_num") else "N/A"
+            )
     except Exception:
         current_cpu = "N/A"
 

@@ -24,9 +24,10 @@ def get_item_by_id(item_id: int, db = Depends(get_db)):
     return item
 
 def get_items_by_owner(owner_id: int, db = Depends(get_db)):
-    if not db.query(UserDB).filter(UserDB.id == owner_id).first():
+    owner = db.query(ItemDB).filter(ItemDB.owner_id == owner_id).all()
+    if not owner:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Owner does not exist")
-    return db.query(ItemDB).filter(ItemDB.owner_id == owner_id).all()
+    return owner
 
 
 def get_all_items(db = Depends(get_db)):

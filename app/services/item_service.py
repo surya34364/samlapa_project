@@ -23,6 +23,11 @@ def get_item_by_id(item_id: int, db = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
     return item
 
+def get_items_by_owner(owner_id: int, db = Depends(get_db)):
+    if not db.query(UserDB).filter(UserDB.id == owner_id).first():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Owner does not exist")
+    return db.query(ItemDB).filter(ItemDB.owner_id == owner_id).all()
+
 
 def get_all_items(db = Depends(get_db)):
     return db.query(ItemDB).all()

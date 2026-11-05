@@ -20,4 +20,6 @@ def get_items(db = Depends(get_db)):
 def get_item(item_id: int, db = Depends(get_db)):
     return item_service.get_item_by_id(item_id, db)
 
-#hahahahaha
+@router.get("/owner/{owner_id}", response_model=list[ItemCreate])
+def get_items_by_owner(owner_id: int, db = Depends(get_db)):
+    return item_service.get_items_by_owner(owner_id, db)

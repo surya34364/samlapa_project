@@ -16,6 +16,10 @@ def create_user(user: UserCreate, db = Depends(get_db)):
 def get_users(db = Depends(get_db)):
     return user_service.get_all_users(db)
 
+@router.get("/{email}", response_model = UserCreate)
+def get_user_by_email(email: str, db = Depends(get_db)):
+    return user_service.get_user_by_email(email, db)
+
 
 @router.get("/{user_id}", response_model=UserCreate)
 def get_user(user_id: int, db = Depends(get_db)):

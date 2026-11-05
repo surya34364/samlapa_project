@@ -21,6 +21,11 @@ def get_user_by_id(user_id: int, db = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user
 
+def get_user_by_email(email: str, db = Depends(get_db)):
+    user = db.query(UserDB).filter(UserDB.email == email).first()
+    if not user:
+        raise HTTPException(status_code = 401, detail = "Invalid email or password")
+    return user
 
 def get_all_users(db = Depends(get_db)):
     return db.query(UserDB).all()
